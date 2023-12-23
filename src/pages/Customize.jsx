@@ -41,11 +41,26 @@ const Customize = () => {
         return null
     }
   }
-  const handleSumit = async(type) => {
+  const handleSubmit = async(type) => {
     if(!prompt) return alert("Please eneter a prompt")
 
     try{
+      setGenerateImg(true)
+      const response = await fetch('http://localhost:5000/api/v1/dalle',{
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
 
+        body: JSON.stringify({
+          prompt
+        })
+      })
+
+      const data = await response.json()
+
+      handleDecals(type, `data:image/png;base64,${data.photo}`)
+      
     }catch(error){
       alert(error)
     }finally{
@@ -70,9 +85,11 @@ const Customize = () => {
        break
       case "filepicker":
         state.isFullTexture = !activeFilterTab[tabName]
+        break
       default:
         state.isLogoTexture = true
         state.isFullTexture = false
+        break
     }
     setActiveFilter((prevState) => {
       return {
