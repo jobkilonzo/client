@@ -9,43 +9,46 @@ import {EditorTabs, FilterTabs, DecalTypes} from '../config/constants'
 import { fadeAnimation, slideAnimation } from '../config/motion'
 import {CustomButton, AIPicker, ColorPicker, FilePicker, Tab} from '../components'
 const Customize = () => {
-  const snap = useSnapshot(state)
+  const snap = useSnapshot(state);
 
-  const [file, setFile] =useState('')
-  const [prompt, setPrompt] = useState('')
-  const [generatingImg, setGenerateImg] = useState(false)
-  const [activeEditorTab, setActiveEditorTab] = useState('')
-  const [activeFilterTab, setActiveFilter] = useState({
+  const [file, setFile] = useState('');
+
+  const [prompt, setPrompt] = useState('');
+  const [generatingImg, setGeneratingImg] = useState(false);
+
+  const [activeEditorTab, setActiveEditorTab] = useState("");
+  const [activeFilterTab, setActiveFilterTab] = useState({
     logoShirt: true,
-    stylishShirt: false
+    stylishShirt: false,
   })
 
+  // show tab content depending on the activeTab
   const generateTabContent = () => {
-    switch (activeEditorTab){
+    switch (activeEditorTab) {
       case "colorpicker":
-        return <ColorPicker/>
+        return <ColorPicker />
       case "filepicker":
         return <FilePicker
-        file={file}
-        setFile={setFile}
-        readFile = {readFile}
+          file={file}
+          setFile={setFile}
+          readFile={readFile}
         />
       case "aipicker":
-        return <AIPicker
-        prompt={prompt}
-        setPrompt={setPrompt}
-        generatingImg={generatingImg}
-        handleSubmit={handleSubmit}
+        return <AIPicker 
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImg={generatingImg}
+          handleSubmit={handleSubmit}
         />
       default:
-        return null
+        return null;
     }
   }
   const handleSubmit = async(type) => {
     if(!prompt) return alert("Please eneter a prompt")
 
     try{
-      setGenerateImg(true)
+      setGeneratingImg(true)
       const response = await fetch('http://localhost:5000/api/v1/dalle',{
         method: 'POST',
         headers: {
@@ -64,7 +67,7 @@ const Customize = () => {
     }catch(error){
       alert(error)
     }finally{
-      setGenerateImg(false)
+      setGeneratingImg(false)
       setActiveEditorTab("")
     }
   }
@@ -83,7 +86,7 @@ const Customize = () => {
       case "logoShirt":
         state.isLogoTexture = !activeFilterTab[tabName]
        break
-      case "filepicker":
+      case "stylishShirt":
         state.isFullTexture = !activeFilterTab[tabName]
         break
       default:
@@ -91,7 +94,7 @@ const Customize = () => {
         state.isFullTexture = false
         break
     }
-    setActiveFilter((prevState) => {
+    setActiveFilterTab((prevState) => {
       return {
         ...prevState,
         [tabName]: !prevState[tabName]
