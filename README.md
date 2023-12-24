@@ -1,6 +1,4 @@
 # Custom shirt
-Int this project I'm building a simple website supported by AI. I'm using openai to customize a logo infront of shirt by building a backend by nodejs.
-
-
+This is a 3D AI project developed using reactjs, nodejs threejs, reactjs-motion. It enables the user to customize the color and logo of shirt using AI.
 
 https://custom-shirt.pages.dev/
